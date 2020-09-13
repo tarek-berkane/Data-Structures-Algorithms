@@ -26,6 +26,11 @@ void traverseInorder(nd *hd);
 void traversePreorder(nd *hd);
 void traversePostorder(nd *hd);
 
+int numberOfLeaf(nd *hd);
+int heightOfTree(nd *hd);
+
+int max_number(int a, int b);
+
 //            10
 //           /  \
 //          20   40
@@ -39,18 +44,23 @@ int main(int argc, char const *argv[])
     head->left = createNode(20);
     head->left->left = createNode(10);
     head->left->right = createNode(90);
+    // head->left->right->right = createNode(90);
 
     head->right = createNode(40);
     head->right->right = createNode(50);
 
     // head = null;
+    // head = createNode(30);
 
     traverseInorder(head);
     printf("\n");
     traversePreorder(head);
     printf("\n");
     traversePostorder(head);
-    /* code */
+    printf("\n");
+    printf("number of leaf is : %d \n", numberOfLeaf(head));
+    printf("height is : %d \n", heightOfTree(head));
+
     return EXIT_SUCCESS;
 }
 
@@ -97,6 +107,8 @@ void traversePreorder(nd *hd)
 //  Postorder (Left, Right, Root)
 void traversePostorder(nd *hd)
 {
+    if (hd == null)
+        return;
 
     if (hd->left != null)
     {
@@ -109,4 +121,54 @@ void traversePostorder(nd *hd)
     }
 
     printf("%d ", hd->value);
+}
+
+//
+
+int numberOfLeaf(nd *hd)
+{
+
+    if (hd == null)
+        return 0;
+
+    if (hd->left != null && hd->right != null)
+        return 1 + numberOfLeaf(hd->left) + numberOfLeaf(hd->right);
+
+    if (hd->left != null)
+        return 1 + numberOfLeaf(hd->left);
+
+    if (hd->right != null)
+        return 1 + numberOfLeaf(hd->right);
+
+    return 1;
+}
+
+int heightOfTree(nd *hd)
+{
+    if (hd == null)
+        return 0;
+
+    if (hd->left != null && hd->right != null)
+    {
+        return 1 + max_number(heightOfTree(hd->left), heightOfTree(hd->right));
+    }
+
+    if (hd->left != null)
+    {
+        return 1 + heightOfTree(hd->left);
+    }
+
+    if (hd->right != null)
+    {
+        return 1 + heightOfTree(hd->right);
+    }
+    
+    return 1;
+}
+
+int max_number(int a, int b)
+{
+    if (a >= b)
+        return a;
+    return b;
 }
